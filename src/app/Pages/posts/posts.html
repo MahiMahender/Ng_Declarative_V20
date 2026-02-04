@@ -1,0 +1,21 @@
+<h3 style="text-align: center;">Posts Data</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (post of posts; track $index) {
+        <tr>
+            <td>{{post.id}}</td>
+            <td>{{post.title}}</td>
+            <td>{{post.description}}</td>
+            <td>{{post.categoryName}}</td>
+        </tr>
+        }
+    </tbody>
+</table>
