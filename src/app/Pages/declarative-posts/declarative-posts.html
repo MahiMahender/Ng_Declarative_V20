@@ -1,7 +1,7 @@
-<h3 style="text-align: center;padding: 10px;">Posts Data</h3>
-<table class="table table-striped ">
+<h3 class="text-center p-3 fw-bold">Declarative Posts Data</h3>
+<table class="table table-hover" *ngIf="posts$ | async as posts">
     <thead>
-        <tr class="table-primary">
+        <tr class="table-dark">
             <th>ID</th>
             <th>Title</th>
             <th>Description</th>
