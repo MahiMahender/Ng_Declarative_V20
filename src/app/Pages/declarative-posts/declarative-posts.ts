@@ -14,5 +14,6 @@ import { DeclarativePostsService } from '../../services/Declarative/declarative-
 export class DeclarativePosts {
   declarativePosts = inject(DeclarativePostsService);
 
-  posts$: Observable<IPost[]> = this.declarativePosts.posts$;
+  /* posts$: Observable<IPost[]> = this.declarativePosts.posts$; */
+  posts$: Observable<IPost[]> = this.declarativePosts.postsWithCategories$;
 }
