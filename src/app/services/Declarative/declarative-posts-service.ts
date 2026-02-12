@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, shareReplay } from 'rxjs';
 import { IPost } from '../../Modals/IPost';
 import { DeclarativeCategoriesService } from '../DeclarativeCategories/declarative-categories-service';
 
@@ -22,6 +22,7 @@ export class DeclarativePostsService {
           id,
         })),
       ),
+      shareReplay(1),
     );
 
   /* If i deal with Array of Objects */
@@ -44,5 +45,6 @@ export class DeclarativePostsService {
         categoryName: categories.find((category) => category.id === post.categoryid)?.title,
       }));
     }),
+    shareReplay(1),
   );
 }
