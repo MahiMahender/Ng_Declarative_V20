@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { combineLatest, filter, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, Observable, Subject } from 'rxjs';
 import { IPost } from '../../Modals/IPost';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { DeclarativePostsService } from '../../services/Declarative/declarative-posts-service';
@@ -18,7 +18,7 @@ export class DeclarativePosts {
   declarativePostsService = inject(DeclarativePostsService);
   declarativeCategoryService = inject(DeclarativeCategoriesService);
 
-  selectCategoryIdSubject = new Subject<string>();
+  selectCategoryIdSubject = new BehaviorSubject<string>('');
   selectCategoryIdAction = this.selectCategoryIdSubject.asObservable();
 
   selectedCategoryId = '';
