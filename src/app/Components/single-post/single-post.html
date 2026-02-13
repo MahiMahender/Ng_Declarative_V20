@@ -1,0 +1,17 @@
+@if (errorMsgAction$ | async ;as errorMsg) {
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-danger">{{errorMsg}}</div>
+    </div>
+</div>
+}
+@if(post$ | async; as post){
+<div class="row">
+    <div class="col">
+        <div>ID:{{post.id}}</div>
+        <div>Title:{{post.title}}</div>
+        <div>Description:{{post.description}}</div>
+        <div>Category:{{post.categoryName}}</div>
+    </div>
+</div>
+}

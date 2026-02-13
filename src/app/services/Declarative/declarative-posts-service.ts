@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { combineLatest, map, Observable, shareReplay } from 'rxjs';
+import { catchError, combineLatest, map, Observable, shareReplay, Subject, throwError } from 'rxjs';
 import { IPost } from '../../Modals/IPost';
 import { DeclarativeCategoriesService } from '../DeclarativeCategories/declarative-categories-service';
 
@@ -14,7 +14,7 @@ export class DeclarativePostsService {
   readonly posts$: Observable<IPost[]> = this.http
     .get<{
       [id: string]: IPost;
-    }>('https://angular-rxjs-declarative-posts-default-rtdb.firebaseio.com/posts.json')
+    }>('https://angular-rxjs-declarative-posts-default-rtdb.firebaseio.com/posts.jsonss')
     .pipe(
       map((posts) =>
         Object.entries(posts ?? {}).map(([id, post]) => ({
@@ -23,6 +23,7 @@ export class DeclarativePostsService {
         })),
       ),
       shareReplay(1),
+      catchError(this.handleError),
     );
 
   /* If i deal with Array of Objects */
@@ -46,5 +47,21 @@ export class DeclarativePostsService {
       }));
     }),
     shareReplay(1),
+    catchError(this.handleError),
   );
+
+  selectedPostSubject = new Subject<string>();
+  selectedPostAction$ = this.selectedPostSubject.asObservable();
+
+  selctedPost(postId: string) {
+    this.selectedPostSubject.next(postId);
+  }
+  post$ = combineLatest([this.postsWithCategories$, this.selectedPostAction$]).pipe(
+    map(([posts, selectedPostId]) => posts.find((post) => post.id == selectedPostId)),
+    catchError(this.handleError),
+  );
+
+  handleError(error: HttpErrorResponse) {
+    return throwError(() => new Error('Unknow error occured plz try agin'));
+  }
 }
