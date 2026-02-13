@@ -16,9 +16,13 @@ export class AltPosts {
   postsService = inject(DeclarativePostsService);
 
   posts$ = this.postsService.postsWithCategories$;
+  selectedPostId = '';
 
   onSelectPost(post: IPost, event: Event) {
     event.preventDefault();
+    if (post.id) {
+      this.selectedPostId = post.id;
+    }
     post.id && this.postsService.selctedPost(post.id);
     console.log(post);
   }

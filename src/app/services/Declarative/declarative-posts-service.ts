@@ -14,7 +14,7 @@ export class DeclarativePostsService {
   readonly posts$: Observable<IPost[]> = this.http
     .get<{
       [id: string]: IPost;
-    }>('https://angular-rxjs-declarative-posts-default-rtdb.firebaseio.com/posts.jsonss')
+    }>('https://angular-rxjs-declarative-posts-default-rtdb.firebaseio.com/posts.json')
     .pipe(
       map((posts) =>
         Object.entries(posts ?? {}).map(([id, post]) => ({
@@ -58,6 +58,7 @@ export class DeclarativePostsService {
   }
   post$ = combineLatest([this.postsWithCategories$, this.selectedPostAction$]).pipe(
     map(([posts, selectedPostId]) => posts.find((post) => post.id == selectedPostId)),
+    shareReplay(1),
     catchError(this.handleError),
   );
 

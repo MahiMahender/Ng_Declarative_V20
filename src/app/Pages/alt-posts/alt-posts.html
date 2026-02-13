@@ -5,7 +5,8 @@
     <div class="col-md-4">
         <div class="list-group">
             @for (post of posts$ | async; track $index) {
-            <a href="#" class="list-group-item list-group-item-action" (click)="onSelectPost(post,$event)">
+            <a href="#" class="list-group-item list-group-item-action" [class]="{active:selectedPostId==post.id}"
+                (click)="onSelectPost(post,$event)">
                 {{post.title}} - {{post.categoryName}}
             </a>
             }

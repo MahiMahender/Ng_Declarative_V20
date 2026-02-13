@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ICategory } from '../../Modals/ICategory';
-import { map } from 'rxjs';
+import { map, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +22,7 @@ export class CategoryService {
           }
           return categories;
         }),
+        shareReplay(1),
       );
   }
 }
