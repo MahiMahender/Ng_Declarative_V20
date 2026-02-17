@@ -1,0 +1,28 @@
+<div>
+    <h3 class="text-center fw-bold">Add Post Details</h3>
+</div>
+<div>
+    <form [formGroup]="postFormData" (ngSubmit)="onAddPost()">
+        <div class="my-2">
+            <label>Title</label>
+            <input type="text" name="title" class="form-control" formControlName="title">
+        </div>
+        <div class="my-2">
+            <label>Category</label>
+            <select class="form-select" formControlName="categoryid">
+                <option value="">Select Category</option>
+                @for (category of categories$ | async; track $index) {
+                <option [value]="category.id">{{category.title}}</option>
+                }
+            </select>
+        </div>
+        <div class="my-2">
+            <label>Description</label>
+            <textarea type="text" class="form-control" formControlName="description"></textarea>
+        </div>
+        <div class="my-2 d-flex justify-content-end">
+            <div class="me-2"><button class="btn btn-danger" (click)="onClosePost()">Close</button></div>
+            <div><button class="btn btn-success">Submit Post</button></div>
+        </div>
+    </form>
+</div>
