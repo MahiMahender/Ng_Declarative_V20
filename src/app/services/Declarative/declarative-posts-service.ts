@@ -132,6 +132,9 @@ export class DeclarativePostsService {
       );
   }
 
+  updatePostSubject = new BehaviorSubject<boolean>(false);
+  updatePostAction$ = this.updatePostSubject.asObservable();
+
   handleError(error: HttpErrorResponse) {
     return throwError(() => new Error('Unknow error occured plz try agin'));
   }

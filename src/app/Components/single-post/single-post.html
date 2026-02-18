@@ -5,6 +5,9 @@
     </div>
 </div>
 }
+<div class="row d-flex justify-content-end me-5">
+    <div class="col-3"><button class="btn btn-warning" (click)="onUpdatePost()">Update Post</button></div>
+</div>
 @if(post$ | async; as post){
 <div class="row">
     <div class="col">

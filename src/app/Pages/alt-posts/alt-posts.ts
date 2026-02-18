@@ -6,10 +6,11 @@ import { IPost } from '../../Modals/IPost';
 import { SinglePost } from '../../Components/single-post/single-post';
 import { tap } from 'rxjs';
 import { AddPost } from '../../Components/add-post/add-post';
+import { UpdatePost } from '../../Components/update-post/update-post';
 
 @Component({
   selector: 'app-alt-posts',
-  imports: [AsyncPipe, SinglePost, AddPost],
+  imports: [AsyncPipe, SinglePost, AddPost, UpdatePost],
   templateUrl: './alt-posts.html',
   styleUrl: './alt-posts.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +21,7 @@ export class AltPosts {
   closeAddPost$ = this.postsService.onClosePostAction$;
   //allPosts$ = this.postsService.allPosts$;
   selectedPostId = '';
+  updatePost$ = this.postsService.updatePostAction$;
 
   posts$ = this.postsService.allPosts$.pipe(
     tap((posts) => {
@@ -37,10 +39,12 @@ export class AltPosts {
     }
     post.id && this.postsService.selctedPost(post.id);
     this.postsService.onClosePostSubject.next(true);
+    this.postsService.updatePostSubject.next(false);
   }
 
   onAddPost() {
     this.showAddPost = true;
     this.postsService.onClosePostSubject.next(false);
+    this.postsService.updatePostSubject.next(false);
   }
 }

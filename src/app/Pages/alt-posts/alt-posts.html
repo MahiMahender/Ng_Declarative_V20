@@ -16,10 +16,16 @@
         </div>
     </div>
     <div class="col-md-8">
-        @if (!showAddPost || (closeAddPost$|async)) {
-        <app-single-post></app-single-post>
-        }@else {
+
+        @if(showAddPost && !(closeAddPost$|async) && !(updatePost$ |async)) {
         <app-add-post></app-add-post>
+        }
+
+        @if((!showAddPost && !(updatePost$ |async)) || (closeAddPost$|async)){
+        <app-single-post></app-single-post>
+        }
+        @if (updatePost$ |async) {
+        <app-update-post></app-update-post>
         }
 
     </div>

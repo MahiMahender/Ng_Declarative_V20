@@ -1,0 +1,31 @@
+<div class="m-2">
+    <h3 class="text-center fw-bold">Update Post</h3>
+</div>
+@if (post$|async) {
+<div>
+    <form [formGroup]="updatePostForm">
+        <div class="container">
+            <div class="my-2">
+                <label>Title</label>
+                <input type="text" class="form-control" formControlName="title">
+            </div>
+            <div class="my-2">
+                <label>Category</label>
+                <select class="form-select" formControlName="categoryid">
+                    <option value="">Select category</option>
+                    @for (category of categories$|async; track $index) {
+                    <option [value]="category.id">{{category.title}}</option>
+                    }
+                </select>
+            </div>
+            <div class="my-2">
+                <label>Description</label>
+                <textarea type="text" class="form-control" formControlName="description"></textarea>
+            </div>
+            <div class="my-2 d-flex justify-content-end">
+                <button class="btn btn-success">Update</button>
+            </div>
+        </div>
+    </form>
+</div>
+}

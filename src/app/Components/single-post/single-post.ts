@@ -16,10 +16,16 @@ export class SinglePost {
   errorMsgAction$ = this.errorMsgSubject.asObservable();
 
   postsService = inject(DeclarativePostsService);
+
   post$ = this.postsService.post$.pipe(
     catchError((error) => {
       this.errorMsgSubject.next(error);
       return EMPTY;
     }),
   );
+
+  onUpdatePost() {
+    this.postsService.updatePostSubject.next(true);
+    this.postsService.onClosePostSubject.next(false);
+  }
 }
