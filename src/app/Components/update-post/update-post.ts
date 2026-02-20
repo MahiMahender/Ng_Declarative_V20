@@ -5,6 +5,7 @@ import { AsyncPipe } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DeclarativePostsService } from '../../services/Declarative/declarative-posts-service';
 import { tap } from 'rxjs';
+import { IPost } from '../../Modals/IPost';
 
 @Component({
   selector: 'app-update-post',
@@ -18,7 +19,7 @@ export class UpdatePost {
   postService = inject(DeclarativePostsService);
 
   categories$ = this.categoryService.categories$;
-
+  postId = '';
   updatePostForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
@@ -28,6 +29,7 @@ export class UpdatePost {
   post$ = this.postService.post$.pipe(
     tap((post) => {
       if (post) {
+        this.postId = post.id + '';
         this.updatePostForm.setValue({
           title: post?.title,
           categoryid: post?.categoryid,
@@ -36,4 +38,12 @@ export class UpdatePost {
       }
     }),
   );
+
+  onUpdatePost() {
+    let updatePost = {
+      ...this.updatePostForm.value,
+      id: this.postId,
+    } as IPost;
+    this.postService.postCRUDSubject.next({ action: 'UPDATE', data: updatePost });
+  }
 }

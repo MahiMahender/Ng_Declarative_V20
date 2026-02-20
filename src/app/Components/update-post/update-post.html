@@ -3,7 +3,7 @@
 </div>
 @if (post$|async) {
 <div>
-    <form [formGroup]="updatePostForm">
+    <form [formGroup]="updatePostForm" (ngSubmit)="onUpdatePost()">
         <div class="container">
             <div class="my-2">
                 <label>Title</label>

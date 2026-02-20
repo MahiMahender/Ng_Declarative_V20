@@ -75,19 +75,21 @@ export class DeclarativePostsService {
   onClosePostSubject = new BehaviorSubject<boolean>(false);
   onClosePostAction$ = this.onClosePostSubject.asObservable();
 
-  addPostSubject = new Subject<CRUDAction<IPost>>();
-  addPostAction$ = this.addPostSubject.asObservable();
+  postCRUDSubject = new Subject<CRUDAction<IPost>>();
+  postCRUDAction$ = this.postCRUDSubject.asObservable();
 
   allPosts$ = merge(
     this.postsWithCategories$,
-    this.addPostAction$.pipe(
+    this.postCRUDAction$.pipe(
       concatMap((postAction: CRUDAction<IPost>) => this.savePost(postAction)),
     ),
   ).pipe(
     scan((posts: IPost[], value: IPost | IPost[]) => {
+      //debugger;
       if (Array.isArray(value)) {
         return value; // initial API load
       } else {
+        posts = posts.map((post) => (value.id === post.id ? value : post));
         return [...posts, value]; // add new post
       }
     }, [] as IPost[]),
@@ -105,16 +107,20 @@ export class DeclarativePostsService {
   );
 
   savePost(postAction: CRUDAction<IPost>): Observable<IPost> {
+    let postDetails$!: Observable<IPost>;
     if (postAction.action === 'ADD') {
-      return this.addPostData(postAction.data).pipe(
-        withLatestFrom(this.categoryListMap$),
-        map(([savedPost, categories]) => ({
-          ...savedPost,
-          categoryName: categories[savedPost.categoryid] ?? '',
-        })),
-      );
+      postDetails$ = this.addPostData(postAction.data);
     }
-    return of(postAction.data as IPost);
+    if (postAction.action === 'UPDATE') {
+      postDetails$ = this.updatePost(postAction.data);
+    }
+    return postDetails$.pipe(
+      withLatestFrom(this.categoryListMap$),
+      map(([savedPost, categories]) => ({
+        ...savedPost,
+        categoryName: categories[savedPost.categoryid] ?? '',
+      })),
+    );
   }
 
   addPostData(post: IPost) {
@@ -130,6 +136,13 @@ export class DeclarativePostsService {
           };
         }),
       );
+  }
+
+  updatePost(post: IPost) {
+    return this.http.patch<IPost>(
+      `https://angular-rxjs-declarative-posts-default-rtdb.firebaseio.com/posts/${post.id}.json`,
+      post,
+    );
   }
 
   updatePostSubject = new BehaviorSubject<boolean>(false);

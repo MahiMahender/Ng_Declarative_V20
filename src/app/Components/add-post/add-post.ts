@@ -24,7 +24,10 @@ export class AddPost {
   });
 
   onAddPost() {
-    this.postService.addPostSubject.next({ action: 'ADD', data: this.postFormData.value as IPost });
+    this.postService.postCRUDSubject.next({
+      action: 'ADD',
+      data: this.postFormData.value as IPost,
+    });
   }
   onClosePost() {
     this.postService.onClosePostSubject.next(true);
