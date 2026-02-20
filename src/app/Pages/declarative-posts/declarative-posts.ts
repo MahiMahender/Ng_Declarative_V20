@@ -6,10 +6,11 @@ import { DeclarativePostsService } from '../../services/Declarative/declarative-
 import { CategoryService } from '../../services/Category/category-service';
 import { DeclarativeCategoriesService } from '../../services/DeclarativeCategories/declarative-categories-service';
 import { ICategory } from '../../Modals/ICategory';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-declarative-posts',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, RouterLink],
   templateUrl: './declarative-posts.html',
   styleUrl: './declarative-posts.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
