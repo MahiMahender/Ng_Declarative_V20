@@ -28,4 +28,10 @@ export class SinglePost {
     this.postsService.updatePostSubject.next(true);
     this.postsService.onClosePostSubject.next(false);
   }
+  onDeletePost(post: IPost) {
+    if (confirm('Do you want to delete post data')) {
+      this.postsService.postCRUDSubject.next({ action: 'DELETE', data: post });
+      this.postsService.onClosePostSubject.next(true);
+    }
+  }
 }

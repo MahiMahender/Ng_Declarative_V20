@@ -5,10 +5,12 @@
     </div>
 </div>
 }
+@if(post$ | async; as post){
 <div class="row d-flex justify-content-end me-5">
     <div class="col-3"><button class="btn btn-warning" (click)="onUpdatePost()">Update Post</button></div>
+    <div class="col-3"><button class="btn btn-danger" (click)="onDeletePost(post)">Delete Post</button></div>
 </div>
-@if(post$ | async; as post){
+
 <div class="row">
     <div class="col">
         <div>ID:{{post.id}}</div>

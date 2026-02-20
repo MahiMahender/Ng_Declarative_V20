@@ -4,6 +4,7 @@ export interface IPost {
   description: string;
   title: string;
   categoryName?: string;
+  delete?: boolean;
 }
 
 export interface CRUDAction<T> {

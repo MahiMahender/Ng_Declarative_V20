@@ -89,11 +89,15 @@ export class DeclarativePostsService {
       if (Array.isArray(value)) {
         return value; // initial API load
       } else {
+        if (value.delete) {
+          posts = posts.filter((post) => post.id !== value.id);
+          this.selctedPost(posts[0].id + '');
+          return posts;
+        }
         posts = posts.map((post) => (value.id === post.id ? value : post));
-        return [...posts, value]; // add new post
+        return [...posts, value];
       }
     }, [] as IPost[]),
-    shareReplay(1),
   );
 
   post$ = combineLatest([this.allPosts$, this.selectedPostAction$]).pipe(
@@ -113,6 +117,9 @@ export class DeclarativePostsService {
     }
     if (postAction.action === 'UPDATE') {
       postDetails$ = this.updatePost(postAction.data);
+    }
+    if (postAction.action === 'DELETE') {
+      postDetails$ = this.deletePost(postAction.data);
     }
     return postDetails$.pipe(
       withLatestFrom(this.categoryListMap$),
@@ -143,6 +150,13 @@ export class DeclarativePostsService {
       `https://angular-rxjs-declarative-posts-default-rtdb.firebaseio.com/posts/${post.id}.json`,
       post,
     );
+  }
+  deletePost(post: IPost) {
+    return this.http
+      .delete(
+        `https://angular-rxjs-declarative-posts-default-rtdb.firebaseio.com/posts/${post.id}.json`,
+      )
+      .pipe(map(() => ({ ...post, delete: true }) as IPost));
   }
 
   updatePostSubject = new BehaviorSubject<boolean>(false);
